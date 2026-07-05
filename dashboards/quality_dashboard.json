@@ -1,0 +1,42 @@
+{
+  "name": "Data Quality & AI Insights Dashboard",
+  "description": "Tracks quality score trends across Bronze/Silver/Gold layers and surfaces the latest AI-generated insight.",
+  "widgets": [
+    {
+      "id": "overall_quality_score",
+      "type": "counter",
+      "title": "Overall Quality Score (latest run)",
+      "query": "SELECT ROUND(AVG(CASE WHEN passed THEN 1.0 ELSE 0.0 END) * 100, 1) AS quality_score_pct FROM dq_project.quality_metrics WHERE run_timestamp = (SELECT MAX(run_timestamp) FROM dq_project.quality_metrics)"
+    },
+    {
+      "id": "quality_trend",
+      "type": "line_chart",
+      "title": "Quality Score Over Time (per layer)",
+      "query": "SELECT DATE(run_timestamp) AS run_date, layer, ROUND(AVG(CASE WHEN passed THEN 1.0 ELSE 0.0 END) * 100, 1) AS quality_score FROM dq_project.quality_metrics GROUP BY 1, 2 ORDER BY 1"
+    },
+    {
+      "id": "failing_checks_table",
+      "type": "table",
+      "title": "Failing Checks — Latest Run",
+      "query": "SELECT layer, table_name, check_name, column_name, metric_value, threshold, details FROM dq_project.quality_metrics WHERE passed = false AND run_timestamp = (SELECT MAX(run_timestamp) FROM dq_project.quality_metrics) ORDER BY layer, check_name"
+    },
+    {
+      "id": "null_rates_bar",
+      "type": "bar_chart",
+      "title": "Null Rate by Column (latest run)",
+      "query": "SELECT column_name, layer, metric_value AS null_rate FROM dq_project.quality_metrics WHERE check_name = 'null_rate' AND run_timestamp = (SELECT MAX(run_timestamp) FROM dq_project.quality_metrics) ORDER BY null_rate DESC LIMIT 20"
+    },
+    {
+      "id": "latest_ai_insight",
+      "type": "text",
+      "title": "Latest AI Insight",
+      "query": "SELECT run_timestamp, severity, summary, root_cause, suggested_action FROM dq_project.ai_insights ORDER BY run_timestamp DESC LIMIT 1"
+    },
+    {
+      "id": "ai_severity_trend",
+      "type": "bar_chart",
+      "title": "AI Insight Severity Over Time",
+      "query": "SELECT DATE(run_timestamp) AS run_date, severity, COUNT(*) AS count FROM dq_project.ai_insights GROUP BY 1, 2 ORDER BY 1"
+    }
+  ]
+}

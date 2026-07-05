@@ -1,0 +1,22 @@
+# Architecture placeholder
+# Replace this file with the actual architecture diagram PNG.
+# Recommended tool: draw.io (diagrams.net) — export as architecture.png
+#
+# The diagram should show:
+#   Synthetic CSV/JSON (injected defects)
+#         ↓
+#   Databricks Free Edition
+#     Bronze (raw + ingestion metadata)
+#         ↓
+#     Silver (deduped, typed, validated)
+#         ↓
+#     Gold (business aggregates)
+#         ↓
+#   Quality Engine (DataQualityChecker)
+#         ↓
+#   quality_metrics Delta table
+#         ↓
+#   AI Insights layer (LLM call)
+#         ↓
+#      ↙          ↘
+#   Dashboard   Alerts (stretch)
