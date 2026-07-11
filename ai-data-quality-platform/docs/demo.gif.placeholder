@@ -1,0 +1,8 @@
+# demo.gif placeholder
+# Replace this file with a screen recording (Loom / OBS export) showing:
+#   1. Running generate_synthetic_data.py to produce CSVs with defects
+#   2. Running the Bronze → Silver → Gold notebooks in Databricks
+#   3. Running the Quality Checks notebook
+#   4. The quality_metrics table populated in Databricks
+#   5. The AI insight row in the ai_insights table
+#   6. The SQL dashboard updating with the new run
